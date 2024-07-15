@@ -67,7 +67,7 @@ const ColabForm = () => {
             label="Senha"
             placeholder="Senha"
             iconSrc="/icons/password.svg"
-            iconAlt="usuári"
+            iconAlt="usuário"
         />
         <SubmitButton isLoading={isLoading}>
             Login
