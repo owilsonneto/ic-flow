@@ -1,15 +1,12 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import CustomFormField from "../CustomFormField"
-import SubmitButton from "../SubmitButton"
-import { useState } from "react"
+import { FormEvent, useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import CustomFormField from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
+import { useRouter } from "next/navigation";
 
 export enum FormFieldType {
     INPUT = 'input',
@@ -22,59 +19,64 @@ export enum FormFieldType {
     PASSWORD = 'password',
 }
  
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
- 
 const ColabForm = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false)
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
-  })
- 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-  }
+  
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { data: session } = useSession();
+  
+    const labelStyles = "w-full text-sm";
+  
+    useEffect(() => {
+      if (session?.user) {
+        router.push("/");
+      }
+    }, [session, router]);
+  
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const res = await signIn("credentials", {
+        user: formData.get("user"),
+        password: formData.get("password"),
+        redirect: false,
+      });
+  
+      if (res?.error) {
+        setError(res.error as string)
+      };
+  
+      if (!res?.error) {
+        return router.push("/")
+      };
+    };
+  
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-        <section className="mb-12 space-y-4">
+    <section>
+      <form onSubmit={handleSubmit} className="space-y-6 flex-1">
+        <section className="mb-8 space-y-4">
             <h1 className="header">Ic-Flow</h1>
             <p className="text-dark-700">Organizando a bagunça.</p>
         </section>
-        <CustomFormField 
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name="name"
-            label="Usuário"
+        {error && <div className=""><p>{error}</p></div>}
+        <div className="flex flex-col gap-4">
+          <label className="text-white size-3">Usuário:</label>
+          <input
+            type="text"
             placeholder="@fulanodetal"
-            iconSrc="/icons/user.svg"
-            iconAlt="usuário"
-        />
-        <CustomFormField 
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name="name"
-            label="Senha"
-            placeholder="Senha"
-            iconSrc="/icons/password.svg"
-            iconAlt="usuário"
-        />
-        <SubmitButton isLoading={isLoading}>
+            className="shad-input border-0 w-full pl-[14px] rounded-md"
+            name="user"
+          />
+        </div>
+        <button className="shad-primary-btn rounded-md h-[36px] w-full transition">
             Login
-        </SubmitButton>
+        </button>
       </form>
-    </Form>
+    </section>
   )
+  
 }
 
 export default ColabForm

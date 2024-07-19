@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { cn } from '@/lib/utils';
+import { cn } from '@/libs/utils';
 import { ThemeProvider } from "@/components/theme-provider";
+import { Provider } from "./Provider";
 
 const fontSans = Poppins({ weight: ['400', '500', '600'], variable: '--font-sans', subsets: ["latin"] });
 
@@ -21,7 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
+      <Provider>
+        <body className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -30,7 +32,8 @@ export default function RootLayout({
           >
             {children}
         </ThemeProvider>
-      </body>
+        </body>
+      </Provider>
     </html>
   );
 }

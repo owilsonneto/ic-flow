@@ -11,12 +11,10 @@ import {
     FormMessage,
   } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Control } from 'react-hook-form'
 import { FormFieldType } from './forms/ColabForm'
 import Image from 'next/image'
 
 interface CustomProps {
-    control: Control<any>,
     fieldType: FormFieldType,
     name: string,
     label?: string,
@@ -58,11 +56,10 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
 }
 
 const CustomFormField = (props: CustomProps) => {
-  const { control, fieldType, name, label } = props;
+  const { fieldType, name, label } = props;
     return (
     <div>
       <FormField
-          control={control}
           name={name}
           render={({ field }) => (
             <FormItem className='flex-1'>
