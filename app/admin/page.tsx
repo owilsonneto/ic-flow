@@ -7,57 +7,37 @@ import Link from 'next/link'
 import React from 'react'
 
 async function getData(): Promise<Payment[]> {
-    // Fetch data from your API here.
+    const { MongoClient } = require("mongodb");
+    // Replace the uri string with your MongoDB deployment's connection string.
+    const { MONGODB_URI } = process.env;
+    const uri = MONGODB_URI;
+    const client = new MongoClient(uri);
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db("icflow");
+        const coll = db.collection("projects");
+        const cursor = coll.find();
+        await cursor.forEach(console.log);
+        
+
+      } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
+      }
+    }
+    run().catch(console.dir);
+  
     return [
       {
-        id: "223129",
+        codigo: "",
         nome: "Educativo Monet à beira d'água",
-        rp: 52,
-        analise: 493,
-        aguarda: 63,
-        lancar: 37,
-        ok: 0,
+        lanrp: 52,
+        analisar: 493,
+        aguarde: 63,
+        lanselic: 37,
+        feito: 0,
         total: 642
-      },
-      {
-        id: "235622",
-        nome: "Plano anual Gaia+",
-        rp: 0,
-        analise: 1,
-        aguarda: 69,
-        lancar: 0,
-        ok: 42,
-        total: 112
-      },
-      {
-        id: "210274",
-        nome: "Tarsila, a brasileira",
-        rp: 363,
-        analise: 302,
-        aguarda: 1,
-        lancar: 1,
-        ok: 131,
-        total: 798
-      },
-      {
-        id: "183500",
-        nome: "Um grande encontro",
-        rp: 107,
-        analise: 112,
-        aguarda: 0,
-        lancar: 0,
-        ok: 0,
-        total: 219
-      },
-      {
-        id: "232226",
-        nome: "Varanda cultural de Nazaré",
-        rp: 69,
-        analise: 8,
-        aguarda: 1,
-        lancar: 40,
-        ok: 0,
-        total: 118
       },
       // ...
     ]

@@ -2,35 +2,23 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import StatusBadge from "../StatusBadge"
-
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Payment = {
-  id: string
+  codigo: string
   nome: string
-  rp: number
-  analise: number
-  aguarda: number
-  lancar: number 
-  ok: number 
+  lanrp: number
+  analisar: number
+  aguarde: number
+  lanselic: number 
+  feito: number 
   total: number
 }
 
 export const columns: ColumnDef<Payment>[] = [
   {
     header: "Código",
-    cell: ({ row }) => <p className="text-14-medium">{row.original.id}</p>
+    cell: ({ row }) => <p className="text-14-medium">{row.original.codigo}</p>
   },
   {
     accessorKey: 'projeto',
@@ -38,29 +26,29 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <p className="text-14-medium">{row.original.nome}</p>
   },
   {
-    accessorKey: 'rp',
+    accessorKey: 'lanrp',
     header: 'Lançar RP',
-    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.rp}</p></div></div>
+    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.lanrp}</p></div></div>
   },
   {
-    accessorKey: 'analise',
+    accessorKey: 'analisar',
     header: 'Analisar',
-    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.analise}</p></div></div>
+    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.analisar}</p></div></div>
   },
   {
-    accessorKey: 'aguarda',
+    accessorKey: 'aguarde',
     header: 'Aguardando doc',
-    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.aguarda}</p></div></div>
+    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.aguarde}</p></div></div>
   },
   {
-    accessorKey: 'lancar',
+    accessorKey: 'lanselic',
     header: 'Lançar no Salic',
-    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.lancar}</p></div></div>
+    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.lanselic}</p></div></div>
   },
   {
-    accessorKey: 'ok',
+    accessorKey: 'feito',
     header: 'Lançados',
-    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.ok}</p></div></div>
+    cell: ({ row }) => <div className="min-w-[64px]"><div className="status-badge bg-light-200"><p className="text-14-medium text-purple-1">{row.original.feito}</p></div></div>
   },
   {
     accessorKey: 'total',
