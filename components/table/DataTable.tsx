@@ -9,6 +9,11 @@ import {
 } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import {
   Table,
   TableBody,
   TableCell,
@@ -38,7 +43,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="data-table">
         <Table className="shad-table">
-          <TableHeader className="bg-dark-200">
+          <TableHeader className="bg-dark-200 truncate">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="shad-table-row-header">
                 {headerGroup.headers.map((header) => {
@@ -68,6 +73,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
+                    
                   ))}
                 </TableRow>
               ))
